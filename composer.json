@@ -9,7 +9,11 @@
             "email": "juan.manzo@vimeo.com"
         }
     ],
-    "require": {},
+    "require": {
+        "guzzle/guzzle": "^3.9",
+        "omnipay/common": "~2.0",
+        "psr/log": "^1.1"
+    },
     "require-dev": {
         "vimeo/psalm": "^3.2"
     }
