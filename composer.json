@@ -1,0 +1,13 @@
+{
+    "name": "vimeo/payment-gateway-logger",
+    "description": "Logging capabilities for Omnipay gateways",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "J.C. Manzo",
+            "email": "juan.manzo@vimeo.com"
+        }
+    ],
+    "require": {}
+}
