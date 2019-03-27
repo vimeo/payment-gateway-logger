@@ -9,5 +9,8 @@
             "email": "juan.manzo@vimeo.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "vimeo/psalm": "^3.2"
+    }
 }
