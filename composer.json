@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "vimeo/psalm": "^3.2",
-        "phpunit/phpunit": "^4"
+        "phpunit/phpunit": "^4",
+        "mockery/mockery": "^0.9.11"
     }
 }
