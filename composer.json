@@ -9,12 +9,18 @@
             "email": "juan.manzo@vimeo.com"
         }
     ],
+     "autoload": {
+        "psr-4": {
+            "PaymentGatewayLogger\\" : "src/"
+        }
+    },
     "require": {
         "guzzle/guzzle": "^3.9",
         "omnipay/common": "~2.0",
         "psr/log": "^1.1"
     },
     "require-dev": {
-        "vimeo/psalm": "^3.2"
+        "vimeo/psalm": "^3.2",
+        "phpunit/phpunit": "^4"
     }
 }

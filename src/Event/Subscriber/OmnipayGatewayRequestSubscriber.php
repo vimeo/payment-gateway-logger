@@ -7,11 +7,10 @@
  * @version    1
  */
 
-namespace Event\Subscriber;
+namespace PaymentGatewayLogger\Event\Subscriber;
 
-
-use Event\Constants;
 use Guzzle\Common\Event;
+use PaymentGatewayLogger\Event\Constants;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
