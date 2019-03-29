@@ -23,3 +23,4 @@ $client = new GuzzleClient();
 $gateway = new VindiciaOmnipayGateway($client);
 $eventDispatcher = $client->getEventDispatcher();
 $eventDispatcher->addSubscriber(new OmnipayGatewayRequestSubscriber($gateway_name, new LoggerClassThatImplementsInterface()));
+```
