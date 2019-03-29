@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
 {
-    const PRIORITY = 255;
+    const PRIORITY = 0;
 
     /**
      * @var LoggerInterface
