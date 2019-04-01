@@ -22,7 +22,7 @@ class ResponseEvent extends Event
     /**
      * @var string
      */
-    protected $type = Constants::OMNIPAY_RESPONSE;
+    protected $type = Constants::OMNIPAY_REQUEST_SUCCESS;
 
     /**
      * @param ResponseInterface $response

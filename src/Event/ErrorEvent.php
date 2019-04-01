@@ -22,7 +22,7 @@ class ErrorEvent extends Event
     /**
      * @var string
      */
-    protected $type = Constants::OMNIPAY_ERROR;
+    protected $type = Constants::OMNIPAY_REQUEST_ERROR;
 
     /**
      * @param Exception $error

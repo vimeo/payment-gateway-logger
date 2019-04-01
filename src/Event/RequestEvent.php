@@ -22,7 +22,7 @@ class RequestEvent extends Event
     /**
      * @var string
      */
-    protected $type = Constants::OMNIPAY_REQUEST;
+    protected $type = Constants::OMNIPAY_REQUEST_BEFORE_SEND;
 
     /**
      * @param RequestInterface $request

@@ -62,9 +62,9 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Constants::OMNIPAY_REQUEST  => array('onOmnipayRequestBeforeSend', self::PRIORITY),
-            Constants::OMNIPAY_RESPONSE => array('onOmnipayRequestSent', self::PRIORITY),
-            Constants::OMNIPAY_ERROR    => array('onOmnipayRequestError', self::PRIORITY),
+            Constants::OMNIPAY_REQUEST_BEFORE_SEND  => array('onOmnipayRequestBeforeSend', self::PRIORITY),
+            Constants::OMNIPAY_REQUEST_SUCCESS => array('onOmnipaySuccessfulResponse', self::PRIORITY),
+            Constants::OMNIPAY_REQUEST_ERROR    => array('onOmnipayRequestError', self::PRIORITY),
         );
     }
 
@@ -93,7 +93,7 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      * @param Event $event
      * @return void
      */
-    public function onOmnipayRequestSent(Event $event)
+    public function onOmnipaySuccessfulResponse(Event $event)
     {
         $this->logger->log(LogLevel::INFO, $this->gateway_name, $event->toArray());
     }
