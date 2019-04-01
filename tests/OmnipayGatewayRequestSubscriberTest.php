@@ -2,6 +2,7 @@
 
 namespace PaymentGatewayLogger;
 
+use InvalidArgumentException;
 use Mockery;
 use Guzzle\Common\Event;
 use Guzzle\Http\Client;
@@ -101,6 +102,9 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         else if ($record['level'] === LogLevel::ERROR) {
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
+        }
+        else {
+            throw new InvalidArgumentException('Logging level has invalid type');
         }
     }
 }
