@@ -71,6 +71,10 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
     /**
      * Triggers a log write before a request is sent.
      *
+     * The event will be converted to an array before being logged. It will contain the following properties:
+     *     array(
+     *         'request' => \Omnipay\Common\Message\AbstractRequest
+     *     )
      * @param Event $event
      * @return void
      */
@@ -82,6 +86,10 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
     /**
      * Triggers a log write when a request completes.
      *
+     * The event will be converted to an array before being logged. It will contain the following properties:
+     *     array(
+     *         'response' => \Omnipay\Common\Message\AbstractResponse
+     *     )
      * @param Event $event
      * @return void
      */
@@ -93,6 +101,10 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
     /**
      * Triggers a log write when a request fails.
      *
+     * The event will be converted to an array before being logged. It will contain the following properties:
+     *     array(
+     *         'error' => Exception
+     *     )
      * @param Event $event
      * @return void
      */
