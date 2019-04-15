@@ -22,6 +22,7 @@
     "require-dev": {
         "vimeo/psalm": "0.3.*",
         "phpunit/phpunit": "^4",
-        "mockery/mockery": "^0.9.11"
+        "mockery/mockery": "^0.9.11",
+        "squizlabs/php_codesniffer": "1.5"
     }
 }
