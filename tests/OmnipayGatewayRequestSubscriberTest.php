@@ -2,10 +2,13 @@
 
 namespace PaymentGatewayLogger;
 
+use Exception;
 use InvalidArgumentException;
-use Mockery;
 use Guzzle\Common\Event;
 use Guzzle\Http\Client;
+use Mockery;
+use Omnipay\Common\Message\RequestInterface;
+use Omnipay\Common\Message\ResponseInterface;
 use PaymentGatewayLogger\Event\ErrorEvent;
 use PaymentGatewayLogger\Event\RequestEvent;
 use PaymentGatewayLogger\Event\ResponseEvent;
@@ -13,7 +16,7 @@ use PaymentGatewayLogger\Event\Subscriber\OmnipayGatewayRequestSubscriber;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Psr\Log\Test\TestLogger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * payment-gateway-logger
@@ -26,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class OmnipayGatewayRequestSubscriberTest extends TestCase
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
     /**
@@ -39,6 +42,9 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
      */
     private $logger;
 
+    /**
+     * @return void
+     */
     protected function setUp()
     {
         $httpClient = new Client();
@@ -49,10 +55,18 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @return array
+     */
     public function providerLoggingEvents()
     {
+        /** @var RequestInterface $request */
         $request = Mockery::mock('Omnipay\Common\Message\RequestInterface');
+
+        /** @var ResponseInterface $response */
         $response = Mockery::mock('Omnipay\Common\Message\ResponseInterface');
+
+        /** @var Exception $exception */
         $exception = Mockery::mock('Exception');
 
         $requestEvent = new RequestEvent($request);
@@ -89,6 +103,8 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
      * @param string $event_type
      * @param Event $event
      * @param array $record
+     *
+     * @return void
      */
     public function testLogging($event_type, $event, array $record)
     {
