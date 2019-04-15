@@ -98,15 +98,11 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         if ($record['level'] === LogLevel::INFO) {
             $this->assertTrue($this->logger->hasInfoRecords());
             $this->assertTrue($this->logger->hasInfo($record));
-        }
-        else if ($record['level'] === LogLevel::ERROR) {
+        } else if ($record['level'] === LogLevel::ERROR) {
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
-        }
-        else {
+        } else {
             throw new InvalidArgumentException('Logging level has invalid type');
         }
     }
 }
-
-
