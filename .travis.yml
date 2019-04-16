@@ -1,0 +1,29 @@
+language: php
+matrix:
+  include:
+    - php: '5.3'
+      env:
+        - TEST_SUITE='no_psalm'
+    - php: '5.4'
+      env:
+        - TEST_SUITE='no_psalm'
+    - php: '5.5'
+      env:
+        - TEST_SUITE='no_psalm'
+    - php: '5.6'
+      env:
+        - TEST_SUITE='with_psalm'
+        - COMPOSER='composer-psalm.json'
+    - php: '7.0'
+      env:
+        - TEST_SUITE='with_psalm'
+        - COMPOSER='composer-psalm.json'
+    - php: '7.1'
+      env:
+        - TEST_SUITE='with_psalm'
+        - COMPOSER='composer-psalm.json'
+install: composer install
+script: make $TEST_SUITE
+dist: precise
+notifications:
+  email: false

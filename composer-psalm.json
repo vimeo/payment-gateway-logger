@@ -17,10 +17,11 @@
     },
     "require": {
         "guzzle/guzzle": "^3.9",
-        "psr/log": "1.0.0",
+        "psr/log": "^1.0",
         "omnipay/common": "~2.0"
     },
     "require-dev": {
-        "omnipay/tests": "~2.0"
+        "omnipay/tests": "~2.0",
+        "vimeo/psalm": "0.3.*"
     }
 }

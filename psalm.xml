@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<psalm
+    name="Psalm for Payment gateway logger driver"
+    useDocblockTypes="true"
+    >
+  <projectFiles>
+    <directory name="src" />
+    <directory name="tests" />
+  </projectFiles>
+
+  <fileExtensions>
+    <extension name=".php" />
+  </fileExtensions>
+
+  <issueHandlers>
+    <MixedArgument errorLevel="suppress" />
+    <MixedMethodCall errorLevel="suppress" />
+    <MixedPropertyFetch errorLevel="suppress" />
+    <MixedPropertyAssignment errorLevel="suppress" />
+    <MixedInferredReturnType errorLevel="suppress" />
+    <MixedArrayAccess errorLevel="suppress" />
+
+    <!-- Psalm doesn't like that initialize() sets instance variables for the constructor -->
+    <PropertyNotSetInConstructor errorLevel="suppress" />
+
+    <!-- Unit tests set lots of instance variables inline -->
+    <UndefinedThisPropertyAssignment>
+      <errorLevel type="suppress">
+        <directory name="tests" />
+      </errorLevel>
+    </UndefinedThisPropertyAssignment>
+    <MissingPropertyType>
+      <errorLevel type="suppress">
+        <directory name="tests" />
+      </errorLevel>
+    </MissingPropertyType>
+    <InaccessibleProperty>
+      <errorLevel type="suppress">
+        <directory name="tests" />
+      </errorLevel>
+    </InaccessibleProperty>
+    <TooManyArguments>
+      <errorLevel type="suppress">
+        <directory name="tests" />
+      </errorLevel>
+    </TooManyArguments>
+    <MissingClosureReturnType>
+       <errorLevel type="suppress">
+        <file name="src/TestLogger.php" />
+      </errorLevel>
+    </MissingClosureReturnType>
+    <MissingClosureParamType>
+       <errorLevel type="suppress">
+        <file name="src/TestLogger.php" />
+      </errorLevel>
+    </MissingClosureParamType>
+  </issueHandlers>
+
+  <mockClasses>
+    <class name="Mockery\MockInterface" />
+  </mockClasses>
+
+</psalm>
