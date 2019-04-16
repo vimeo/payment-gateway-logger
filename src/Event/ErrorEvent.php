@@ -20,11 +20,6 @@ class ErrorEvent extends Event
     protected $error;
 
     /**
-     * @var string
-     */
-    protected $type = Constants::OMNIPAY_REQUEST_ERROR;
-
-    /**
      * @param Exception $error
      */
     public function __construct($error)
@@ -47,6 +42,6 @@ class ErrorEvent extends Event
      */
     public function getType()
     {
-        return $this->type;
+        return Constants::OMNIPAY_REQUEST_ERROR;
     }
 }

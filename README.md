@@ -1,7 +1,7 @@
 Logging capabilities for Omnipay gateways via an `EventSubscriberInterface` subscriber for Omnipay payment gateway-specific events.
 These events are dispatched via the HTTP client's `EventDispatcherInterface`.
 * The omnipay gateway needs to be updated to emit any of the `RequestEvent`, `ResponseEvent` or `ErrorEvent` objects.
-For example in the gateway's`sendData()` methods we can do:
+For example in the gateway's `sendData()` methods we can do:
 
     ```PHP
     $event_dispatcher = $this->httpClient->getEventDispatcher();
@@ -11,7 +11,7 @@ For example in the gateway's`sendData()` methods we can do:
     Logging Errors and Responses events can be emitted like so
     ```PHP
     $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_ERROR new ErrorEvent($exception));
-    $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_SUCCESS, new ResponseEvent($response));
+    $event_dispatcher->dispatch(Constants::OMNIPAY_RESPONSE_SUCCESS, new ResponseEvent($response));
     ```
 
 `OmnipayGatewayRequestSubscriber.php` takes in a logger of type `LoggerInterface` which will listen to and log these events.
@@ -19,8 +19,8 @@ For example in the gateway's`sendData()` methods we can do:
 The subscriber can be set up  to listen to these events when instantiating the HTTP client for the gateway like so:
 
 ```PHP
-$client = new GuzzleClient();
-$gateway = new VindiciaOmnipayGateway($client);
-$eventDispatcher = $client->getEventDispatcher();
+$httpClient = new GuzzleClient();
+$gateway = Omnipay::create('Vindicia', $httpClient);
+$eventDispatcher = $httpClient->getEventDispatcher();
 $eventDispatcher->addSubscriber(new OmnipayGatewayRequestSubscriber($gateway_name, new LoggerClassThatImplementsInterface()));
 ```

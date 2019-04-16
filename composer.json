@@ -11,7 +11,8 @@
     ],
      "autoload": {
         "psr-4": {
-            "PaymentGatewayLogger\\" : "src/"
+            "PaymentGatewayLogger\\" : "src/",
+            "PaymentGatewayLogger\\Test\\" : "tests/"
         }
     },
     "require": {

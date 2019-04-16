@@ -13,7 +13,7 @@ use PaymentGatewayLogger\Event\ErrorEvent;
 use PaymentGatewayLogger\Event\RequestEvent;
 use PaymentGatewayLogger\Event\ResponseEvent;
 use PaymentGatewayLogger\Event\Subscriber\OmnipayGatewayRequestSubscriber;
-use PaymentGatewayLogger\TestFramework\TestLogger;
+use PaymentGatewayLogger\Test\Framework\TestLogger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

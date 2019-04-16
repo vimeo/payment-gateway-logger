@@ -13,6 +13,6 @@ namespace PaymentGatewayLogger\Event;
 final class Constants
 {
     const OMNIPAY_REQUEST_BEFORE_SEND = 'omnipay.request.before_send';
-    const OMNIPAY_REQUEST_SUCCESS = 'omnipay.request.sent';
+    const OMNIPAY_RESPONSE_SUCCESS = 'omnipay.response.success';
     const OMNIPAY_REQUEST_ERROR = 'omnipay.request.error';
 }

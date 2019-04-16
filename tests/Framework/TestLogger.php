@@ -1,6 +1,6 @@
 <?php
 
-namespace PaymentGatewayLogger\TestFramework;
+namespace PaymentGatewayLogger\Test\Framework;
 
 use Psr\Log\AbstractLogger;
 

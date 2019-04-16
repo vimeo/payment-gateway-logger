@@ -20,11 +20,6 @@ class RequestEvent extends Event
     protected $request;
 
     /**
-     * @var string
-     */
-    protected $type = Constants::OMNIPAY_REQUEST_BEFORE_SEND;
-
-    /**
      * @param RequestInterface $request
      */
     public function __construct($request)
@@ -47,6 +42,6 @@ class RequestEvent extends Event
      */
     public function getType()
     {
-        return $this->type;
+        return Constants::OMNIPAY_REQUEST_BEFORE_SEND;
     }
 }

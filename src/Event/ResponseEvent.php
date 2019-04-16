@@ -20,11 +20,6 @@ class ResponseEvent extends Event
     protected $response;
 
     /**
-     * @var string
-     */
-    protected $type = Constants::OMNIPAY_REQUEST_SUCCESS;
-
-    /**
      * @param ResponseInterface $response
      */
     public function __construct($response)
@@ -47,6 +42,6 @@ class ResponseEvent extends Event
      */
     public function getType()
     {
-        return $this->type;
+        return Constants::OMNIPAY_RESPONSE_SUCCESS;
     }
 }
