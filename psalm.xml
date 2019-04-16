@@ -44,6 +44,16 @@
         <directory name="tests" />
       </errorLevel>
     </TooManyArguments>
+    <MissingClosureReturnType>
+       <errorLevel type="suppress">
+        <file name="src/TestLogger.php" />
+      </errorLevel>
+    </MissingClosureReturnType>
+    <MissingClosureParamType>
+       <errorLevel type="suppress">
+        <file name="src/TestLogger.php" />
+      </errorLevel>
+    </MissingClosureParamType>
   </issueHandlers>
 
   <mockClasses>

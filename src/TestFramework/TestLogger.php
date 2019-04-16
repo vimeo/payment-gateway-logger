@@ -63,6 +63,9 @@ class TestLogger extends AbstractLogger
      */
     public $records = array();
 
+    /**
+     * @var array
+     */
     public $recordsByLevel = array();
 
     /**
@@ -80,16 +83,28 @@ class TestLogger extends AbstractLogger
         $this->records[] = $record;
     }
 
+    /**
+     * @param $level
+     *
+     * @return bool
+     */
     public function hasRecords($level)
     {
         return isset($this->recordsByLevel[$level]);
     }
 
+    /**
+     * @param $record
+     * @param $level
+     *
+     * @return bool
+     */
     public function hasRecord($record, $level)
     {
         if (is_string($record)) {
             $record = array('message' => $record);
         }
+
         return $this->hasRecordThatPasses(function ($rec) use ($record) {
             if ($rec['message'] !== $record['message']) {
                 return false;
@@ -101,6 +116,12 @@ class TestLogger extends AbstractLogger
         }, $level);
     }
 
+    /**
+     * @param $message
+     * @param $level
+     *
+     * @return bool
+     */
     public function hasRecordThatContains($message, $level)
     {
         return $this->hasRecordThatPasses(function ($rec) use ($message) {
@@ -108,6 +129,12 @@ class TestLogger extends AbstractLogger
         }, $level);
     }
 
+    /**
+     * @param $regex
+     * @param $level
+     *
+     * @return bool
+     */
     public function hasRecordThatMatches($regex, $level)
     {
         return $this->hasRecordThatPasses(function ($rec) use ($regex) {
@@ -115,6 +142,12 @@ class TestLogger extends AbstractLogger
         }, $level);
     }
 
+    /**
+     * @param $predicate
+     * @param $level
+     *
+     * @return bool
+     */
     public function hasRecordThatPasses($predicate, $level)
     {
         if (!isset($this->recordsByLevel[$level])) {
@@ -128,6 +161,12 @@ class TestLogger extends AbstractLogger
         return false;
     }
 
+    /**
+     * @param $method
+     * @param $args
+     *
+     * @return mixed
+     */
     public function __call($method, $args)
     {
         if (preg_match('/(.*)(Debug|Info|Notice|Warning|Error|Critical|Alert|Emergency)(.*)/', $method, $matches) > 0) {
@@ -141,6 +180,9 @@ class TestLogger extends AbstractLogger
         throw new \BadMethodCallException('Call to undefined method ' . get_class($this) . '::' . $method . '()');
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         $this->records = array();
