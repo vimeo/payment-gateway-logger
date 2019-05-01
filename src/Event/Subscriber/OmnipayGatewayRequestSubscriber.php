@@ -12,7 +12,6 @@ namespace PaymentGatewayLogger\Event\Subscriber;
 use Guzzle\Common\Event;
 use PaymentGatewayLogger\Event\Constants;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
