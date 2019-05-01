@@ -15,26 +15,12 @@ use Omnipay\Common\Message\ResponseInterface;
 class ResponseEvent extends Event
 {
     /**
-     * @var ResponseInterface
-     */
-    protected $response;
-
-    /**
      * @param ResponseInterface $response
+     * @param string            $request_name
      */
-    public function __construct($response)
+    public function __construct($response, $request_name)
     {
-        $this->response = $response;
-
-        parent::__construct(array('response' => $response));
-    }
-
-    /**
-     * @return ResponseInterface
-     */
-    public function getContext()
-    {
-        return $this->response;
+        parent::__construct(array('response' => $response, 'request_name' => $request_name));
     }
 
     /**

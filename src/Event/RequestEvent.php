@@ -15,26 +15,12 @@ use Omnipay\Common\Message\RequestInterface;
 class RequestEvent extends Event
 {
     /**
-     * @var RequestInterface
-     */
-    protected $request;
-
-    /**
      * @param RequestInterface $request
+     * @param string           $request_name
      */
-    public function __construct($request)
+    public function __construct($request, $request_name)
     {
-        $this->request = $request;
-
-        parent::__construct(array('request' => $request));
-    }
-
-    /**
-     * @return RequestInterface
-     */
-    public function getContext()
-    {
-        return $this->request;
+        parent::__construct(array('request' => $request, 'request_name' => $request_name));
     }
 
     /**

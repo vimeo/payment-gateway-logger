@@ -15,26 +15,12 @@ use Guzzle\Common\Event;
 class ErrorEvent extends Event
 {
     /**
-     * @var Exception
-     */
-    protected $error;
-
-    /**
      * @param Exception $error
+     * @param string    $request_name
      */
-    public function __construct($error)
+    public function __construct($error, $request_name)
     {
-        $this->error = $error;
-
-        parent::__construct(array('error' => $error));
-    }
-
-    /**
-     * @return Exception
-     */
-    public function getContext()
-    {
-        return $this->error;
+        parent::__construct(array('error' => $error, 'request_name' => $request_name));
     }
 
     /**
