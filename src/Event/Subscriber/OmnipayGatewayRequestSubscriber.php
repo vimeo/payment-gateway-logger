@@ -80,7 +80,7 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayRequestBeforeSend(Event $event)
     {
-        $this->logger->info($this->gateway_name, $event->toArray());
+        $this->logger->log(LogLevel::INFO, $this->gateway_name, $event->toArray());
     }
 
     /**
@@ -95,7 +95,7 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayResponseSuccess(Event $event)
     {
-        $this->logger->notice($this->gateway_name, $event->toArray());
+        $this->logger->log(LogLevel::INFO, $this->gateway_name, $event->toArray());
     }
 
     /**
@@ -110,6 +110,6 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayRequestError(Event $event)
     {
-        $this->logger->error($this->gateway_name, $event->toArray());
+        $this->logger->log(LogLevel::ERROR, $this->gateway_name, $event->toArray());
     }
 }
