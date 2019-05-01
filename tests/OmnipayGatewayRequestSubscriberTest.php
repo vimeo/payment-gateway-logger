@@ -79,7 +79,7 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
             'context' => $requestEvent->toArray(),
         );
         $responseRecord = array(
-            'level' => LogLevel::INFO,
+            'level' => LogLevel::NOTICE,
             'message' => 'omnipay_test',
             'context' => $responseEvent->toArray(),
         );
@@ -114,6 +114,9 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         if ($record['level'] === LogLevel::INFO) {
             $this->assertTrue($this->logger->hasInfoRecords());
             $this->assertTrue($this->logger->hasInfo($record));
+        } else if ($record['level'] === LogLevel::NOTICE) {
+            $this->assertTrue($this->logger->hasNoticeRecords());
+            $this->assertTrue($this->logger->hasNotice($record));
         } else if ($record['level'] === LogLevel::ERROR) {
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
