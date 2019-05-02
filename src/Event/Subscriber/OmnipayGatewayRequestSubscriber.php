@@ -12,7 +12,6 @@ namespace PaymentGatewayLogger\Event\Subscriber;
 use Guzzle\Common\Event;
 use PaymentGatewayLogger\Event\Constants;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
@@ -80,7 +79,7 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayRequestBeforeSend(Event $event)
     {
-        $this->logger->log(LogLevel::INFO, $this->gateway_name, $event->toArray());
+        $this->logger->info($this->gateway_name, $event->toArray());
     }
 
     /**
@@ -95,7 +94,7 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayResponseSuccess(Event $event)
     {
-        $this->logger->log(LogLevel::INFO, $this->gateway_name, $event->toArray());
+        $this->logger->notice($this->gateway_name, $event->toArray());
     }
 
     /**
@@ -110,6 +109,6 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      */
     public function onOmnipayRequestError(Event $event)
     {
-        $this->logger->log(LogLevel::ERROR, $this->gateway_name, $event->toArray());
+        $this->logger->error($this->gateway_name, $event->toArray());
     }
 }

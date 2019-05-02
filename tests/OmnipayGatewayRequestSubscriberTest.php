@@ -3,8 +3,8 @@
 namespace PaymentGatewayLogger;
 
 use Exception;
-use InvalidArgumentException;
 use Guzzle\Common\Event;
+use InvalidArgumentException;
 use Guzzle\Http\Client;
 use Mockery;
 use Omnipay\Common\Message\RequestInterface;
@@ -43,6 +43,11 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
     private $logger;
 
     /**
+     * @var string
+     */
+    private $requestName = 'test_request_name';
+
+    /**
      * @return void
      */
     protected function setUp()
@@ -51,7 +56,6 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         $this->eventDispatcher = $httpClient->getEventDispatcher();
         $this->logger = new TestLogger();
         $this->subscriber = new OmnipayGatewayRequestSubscriber('test', $this->logger);
-
         parent::setUp();
     }
 
@@ -69,9 +73,9 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         /** @var Exception $exception */
         $exception = Mockery::mock('Exception');
 
-        $requestEvent = new RequestEvent($request);
-        $responseEvent = new ResponseEvent($response);
-        $errorEvent = new ErrorEvent($exception);
+        $requestEvent = new RequestEvent($request, $this->requestName);
+        $responseEvent = new ResponseEvent($response, $this->requestName);
+        $errorEvent = new ErrorEvent($exception, $this->requestName);
 
         $requestRecord = array(
             'level' => LogLevel::INFO,
@@ -79,7 +83,7 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
             'context' => $requestEvent->toArray(),
         );
         $responseRecord = array(
-            'level' => LogLevel::INFO,
+            'level' => LogLevel::NOTICE,
             'message' => 'omnipay_test',
             'context' => $responseEvent->toArray(),
         );
@@ -111,10 +115,19 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         $this->eventDispatcher->addSubscriber($this->subscriber);
         $this->eventDispatcher->dispatch($event_type, $event);
 
+        $context = $event->toArray();
+        $this->assertEquals($this->requestName, $context['request_name']);
+
         if ($record['level'] === LogLevel::INFO) {
+            $this->assertInstanceOf('Omnipay\Common\Message\RequestInterface', $context['request']);
             $this->assertTrue($this->logger->hasInfoRecords());
             $this->assertTrue($this->logger->hasInfo($record));
+        } else if ($record['level'] === LogLevel::NOTICE) {
+            $this->assertInstanceOf('Omnipay\Common\Message\ResponseInterface', $context['response']);
+            $this->assertTrue($this->logger->hasNoticeRecords());
+            $this->assertTrue($this->logger->hasNotice($record));
         } else if ($record['level'] === LogLevel::ERROR) {
+            $this->assertInstanceOf('\Exception', $context['error']);
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
         } else {
