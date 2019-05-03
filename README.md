@@ -4,15 +4,14 @@ These events are dispatched via the HTTP client's `EventDispatcherInterface`.
 For example in the gateway's `sendData()` methods we can do:
 
     ```PHP
-    $request_name; // The name of the API endpoint being called
     $event_dispatcher = $this->httpClient->getEventDispatcher();
-    $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_BEFORE_SEND, new RequestEvent($request, $request_name));
+    $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_BEFORE_SEND, new RequestEvent($request));
     ```
 
     Logging Errors and Responses events can be emitted like so
     ```PHP
-    $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_ERROR new ErrorEvent($exception', $request_name));
-    $event_dispatcher->dispatch(Constants::OMNIPAY_RESPONSE_SUCCESS, new ResponseEvent($response, $request_name));
+    $event_dispatcher->dispatch(Constants::OMNIPAY_REQUEST_ERROR new ErrorEvent($exception, $request));
+    $event_dispatcher->dispatch(Constants::OMNIPAY_RESPONSE_SUCCESS, new ResponseEvent($response));
     ```
 
 `OmnipayGatewayRequestSubscriber.php` takes in a logger of type `LoggerInterface` which will listen to and log these events.
