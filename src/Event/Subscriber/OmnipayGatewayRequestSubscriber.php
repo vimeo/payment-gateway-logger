@@ -3,7 +3,6 @@
  * payment-gateway-logger
  *
  * @package    payment-gateway-logger
- * @author     manzoj
  * @version    1
  */
 

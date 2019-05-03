@@ -6,7 +6,6 @@ namespace PaymentGatewayLogger\Event;
  * Class events.
  *
  * @package    payment-gateway-logger
- * @author     manzoj
  * @version    1
  */
 
