@@ -101,7 +101,8 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      *
      * The event will be converted to an array before being logged. It will contain the following properties:
      *     array(
-     *         'error' => Exception
+     *         'error' => Exception,
+     *         'request' => \Omnipay\Common\Message\AbstractRequest
      *     )
      * @param Event $event
      * @return void
