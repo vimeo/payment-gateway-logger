@@ -121,6 +121,7 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
             $this->assertTrue($this->logger->hasNotice($record));
         } else if ($record['level'] === LogLevel::ERROR) {
             $this->assertInstanceOf('\Exception', $context['error']);
+            $this->assertInstanceOf('Omnipay\Common\Message\RequestInterface', $context['request']);
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
         } else {
