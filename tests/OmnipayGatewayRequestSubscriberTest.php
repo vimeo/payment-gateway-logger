@@ -22,7 +22,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * payment-gateway-logger
  *
  * @package    payment-gateway-logger
- * @author     manzoj
  * @version    1
  */
 
@@ -41,11 +40,6 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
      * @var TestLogger
      */
     private $logger;
-
-    /**
-     * @var string
-     */
-    private $requestName = 'test_request_name';
 
     /**
      * @return void
@@ -73,9 +67,9 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         /** @var Exception $exception */
         $exception = Mockery::mock('Exception');
 
-        $requestEvent = new RequestEvent($request, $this->requestName);
-        $responseEvent = new ResponseEvent($response, $this->requestName);
-        $errorEvent = new ErrorEvent($exception, $this->requestName);
+        $requestEvent = new RequestEvent($request);
+        $responseEvent = new ResponseEvent($response);
+        $errorEvent = new ErrorEvent($exception, $request);
 
         $requestRecord = array(
             'level' => LogLevel::INFO,
@@ -116,7 +110,6 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         $this->eventDispatcher->dispatch($event_type, $event);
 
         $context = $event->toArray();
-        $this->assertEquals($this->requestName, $context['request_name']);
 
         if ($record['level'] === LogLevel::INFO) {
             $this->assertInstanceOf('Omnipay\Common\Message\RequestInterface', $context['request']);
@@ -128,6 +121,7 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
             $this->assertTrue($this->logger->hasNotice($record));
         } else if ($record['level'] === LogLevel::ERROR) {
             $this->assertInstanceOf('\Exception', $context['error']);
+            $this->assertInstanceOf('Omnipay\Common\Message\RequestInterface', $context['request']);
             $this->assertTrue($this->logger->hasErrorRecords());
             $this->assertTrue($this->logger->hasError($record));
         } else {
