@@ -20,12 +20,12 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    protected $logger;
 
     /**
      * @var string
      */
-    private $gateway_name;
+    protected $gateway_name;
 
     /**
      * OmnipayGatewayRequestSubscriber constructor.
