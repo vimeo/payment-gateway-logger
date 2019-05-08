@@ -8,7 +8,10 @@
 
 namespace PaymentGatewayLogger\Event\Subscriber;
 
+use Exception;
 use Guzzle\Common\Event;
+use Omnipay\Common\Message\RequestInterface;
+use Omnipay\Common\Message\ResponseInterface;
 use PaymentGatewayLogger\Event\Constants;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -71,14 +74,27 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      *
      * The event will be converted to an array before being logged. It will contain the following properties:
      *     array(
-     *         'request' => \Omnipay\Common\Message\AbstractRequest
+     *         'gateway_name' => The name of the gateway being logged,
+     *         'request_name' => The name of the request object,
+     *         'data' => The raw data associated with the request.
      *     )
      * @param Event $event
      * @return void
      */
     public function onOmnipayRequestBeforeSend(Event $event)
     {
-        $this->logger->info($this->gateway_name, $event->toArray());
+        $request_event = $event->toArray();
+
+        /** @var RequestInterface $request */
+        $request = $request_event['request'];
+
+        $context = array(
+            'gateway_name' => $this->gateway_name,
+            'request_name' => strtolower(get_class($request)),
+            'data' => $request->getData()
+        );
+
+        $this->logger->info(Constants::OMNIPAY_REQUEST_BEFORE_SEND, $context);
     }
 
     /**
@@ -86,14 +102,38 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      *
      * The event will be converted to an array before being logged. It will contain the following properties:
      *     array(
-     *         'response' => \Omnipay\Common\Message\AbstractResponse
+     *         'gateway_name' => The name of the gateway being logged,
+     *         'request_name' => The name of the request object,
+     *         'is_successful' => True if the response received a successful HTTP response code, false otherwise,
+     *         'response_code' => The HTTP response code,
+     *         'response_message' => The HTTP response message,
+     *         'soap_id' => SOAP id associated with this request (if any),
+     *         'transaction_reference' => The gateway transaction id reference
      *     )
      * @param Event $event
      * @return void
      */
     public function onOmnipayResponseSuccess(Event $event)
     {
-        $this->logger->notice($this->gateway_name, $event->toArray());
+        $response_event = $event->toArray();
+
+         /** @var ResponseInterface $response */
+        $response = $response_event['response'];
+
+        $is_successful = $response->isSuccessful();
+        $response_code = $response->getCode() ?: null;
+
+        $context = array(
+            'gateway_name' => $this->gateway_name,
+            'request_name' => strtolower(get_class($response->getRequest())),
+            'is_successful' => $is_successful,
+            'response_code' => $response_code,
+            'response_message' => $response->getMessage(),
+            'soap_id' => method_exists($response, 'getSoapId') ? $response->getSoapId() : null,
+            'transaction_reference' => $response->getTransactionReference()
+        );
+
+        $this->logger->notice(Constants::OMNIPAY_RESPONSE_SUCCESS, $context);
     }
 
     /**
@@ -101,14 +141,33 @@ class OmnipayGatewayRequestSubscriber implements EventSubscriberInterface
      *
      * The event will be converted to an array before being logged. It will contain the following properties:
      *     array(
-     *         'error' => Exception,
-     *         'request' => \Omnipay\Common\Message\AbstractRequest
+     *         'gateway_name' => The name of the gateway being logged,
+     *         'request_name' => The name of the request object,
+     *         'error_code' => The exception error code,
+     *         'error_message' => The exception error message,
+     *         'trace' => The exception trace string
      *     )
      * @param Event $event
      * @return void
      */
     public function onOmnipayRequestError(Event $event)
     {
-        $this->logger->error($this->gateway_name, $event->toArray());
+        $error_event = $event->toArray();
+
+        /** @var Exception $error */
+        $error = $error_event['error'];
+
+        /** @var RequestInterface $request */
+        $request = $error_event['request'];
+
+        $context = array(
+            'gateway_name' => $this->gateway_name,
+            'request_name' => strtolower(get_class($request)),
+            'error_code' => $error->getCode(),
+            'error_message' => $error->getMessage(),
+            'trace' => $error->getTraceAsString()
+        );
+
+        $this->logger->error(Constants::OMNIPAY_REQUEST_ERROR, $context);
     }
 }
