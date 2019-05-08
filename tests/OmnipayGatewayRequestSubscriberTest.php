@@ -9,6 +9,7 @@ use Guzzle\Http\Client;
 use Mockery;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Message\ResponseInterface;
+use PaymentGatewayLogger\Event\Constants;
 use PaymentGatewayLogger\Event\ErrorEvent;
 use PaymentGatewayLogger\Event\RequestEvent;
 use PaymentGatewayLogger\Event\ResponseEvent;
@@ -42,6 +43,11 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
     private $logger;
 
     /**
+     * @var string
+     */
+    private $gateway_name = 'test_gateway';
+
+    /**
      * @return void
      */
     protected function setUp()
@@ -49,7 +55,7 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         $httpClient = new Client();
         $this->eventDispatcher = $httpClient->getEventDispatcher();
         $this->logger = new TestLogger();
-        $this->subscriber = new OmnipayGatewayRequestSubscriber('test', $this->logger);
+        $this->subscriber = new OmnipayGatewayRequestSubscriber($this->gateway_name, $this->logger);
         parent::setUp();
     }
 
@@ -59,10 +65,16 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
     public function providerLoggingEvents()
     {
         /** @var RequestInterface $request */
-        $request = Mockery::mock('Omnipay\Common\Message\RequestInterface');
+        $request = $this->getMock('Omnipay\Common\Message\RequestInterface');
 
         /** @var ResponseInterface $response */
-        $response = Mockery::mock('Omnipay\Common\Message\ResponseInterface');
+        $response = $this->getMockForAbstractClass(
+            'Omnipay\Common\Message\ResponseInterface',
+            array('getRequest', 'isSuccessful')
+        );
+
+        $response->method('getRequest')->willReturn($request);
+        $response->method('isSuccessful')->willReturn(true);
 
         /** @var Exception $exception */
         $exception = Mockery::mock('Exception');
@@ -71,20 +83,41 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
         $responseEvent = new ResponseEvent($response);
         $errorEvent = new ErrorEvent($exception, $request);
 
+        $request_name = strtolower(get_class($request));
+        $gateway_name_logger = 'omnipay_' . $this->gateway_name;
+
         $requestRecord = array(
             'level' => LogLevel::INFO,
-            'message' => 'omnipay_test',
-            'context' => $requestEvent->toArray(),
+            'message' => Constants::OMNIPAY_REQUEST_BEFORE_SEND,
+            'context' => array (
+                'gateway_name' => $gateway_name_logger,
+                'request_name' => $request_name,
+                'data' => $request->getData()
+            ),
         );
         $responseRecord = array(
             'level' => LogLevel::NOTICE,
-            'message' => 'omnipay_test',
-            'context' => $responseEvent->toArray(),
+            'message' => Constants::OMNIPAY_RESPONSE_SUCCESS,
+            'context' => array(
+                'gateway_name' => $gateway_name_logger,
+                'request_name' => $request_name,
+                'is_successful' => $response->isSuccessful(),
+                'response_code' => $response->getCode(),
+                'response_message' => $response->getMessage(),
+                'soap_id' => method_exists($response, 'getSoapId') ? $response->getSoapId() : null,
+                'transaction_reference' => $response->getTransactionReference()
+            )
         );
         $errorRecord = array(
             'level' => LogLevel::ERROR,
-            'message' => 'omnipay_test',
-            'context' => $errorEvent->toArray(),
+            'message' => Constants::OMNIPAY_REQUEST_ERROR,
+            'context' => array(
+                'gateway_name' => $gateway_name_logger,
+                'request_name' => $request_name,
+                'error_code' => $exception->getCode(),
+                'error_message' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString()
+            )
         );
 
         return array(
@@ -93,7 +126,6 @@ class OmnipayGatewayRequestSubscriberTest extends TestCase
             array($errorEvent->getType(), $errorEvent, $errorRecord),
         );
     }
-
 
     /**
      * @dataProvider providerLoggingEvents
