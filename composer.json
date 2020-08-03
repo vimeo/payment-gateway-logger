@@ -21,7 +21,6 @@
         "omnipay/common": "3.0"
     },
     "require-dev": {
-        "omnipay/tests": "3.0",
-        "vimeo/psalm": "^3.13"
+        "omnipay/tests": "3.0"
     }
 }
