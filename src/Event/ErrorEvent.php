@@ -18,9 +18,11 @@ class ErrorEvent extends Event
      * @param Exception $error
      * @param RequestInterface $request
      */
-    public function __construct($error, $request)
+    public function __construct($error, $request, array $context = array())
     {
-        parent::__construct(array('error' => $error, 'request' => $request));
+        $context['error'] = $error;
+        $context['request'] = $request;
+        parent::__construct($context);
     }
 
     /**
