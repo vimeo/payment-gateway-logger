@@ -1,3 +1,23 @@
+## Installation
+
+Package is installed via [Composer](http://getcomposer.org/). To install, simply add it to your `composer.json` file:
+
+```json
+{
+    "require": {
+        "vimeo/payment-gateway-logger": "^1.0"
+    }
+}
+```
+
+And run composer to update your dependencies:
+
+```
+$ curl -s http://getcomposer.org/installer | php
+$ php composer.phar update
+```
+
+## Usage
 Logging capabilities for Omnipay gateways via an `EventSubscriberInterface` subscriber for Omnipay payment gateway-specific events.
 These events are dispatched via the HTTP client's `EventDispatcherInterface`.
 * The omnipay gateway needs to be updated to emit any of the `RequestEvent`, `ResponseEvent` or `ErrorEvent` objects.
@@ -24,3 +44,4 @@ $gateway = Omnipay::create('Vindicia', $httpClient);
 $eventDispatcher = $httpClient->getEventDispatcher();
 $eventDispatcher->addSubscriber(new OmnipayGatewayRequestSubscriber($gateway_name, new LoggerClassThatImplementsPSRInterface()));
 ```
+
