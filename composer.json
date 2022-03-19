@@ -16,11 +16,11 @@
         }
     },
     "require": {
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.4",
         "psr/log": "^1.0",
         "omnipay/common": "3.0"
     },
     "require-dev": {
-        "omnipay/tests": "3.0"
+        "omnipay/tests": "^4.1"
     }
 }
