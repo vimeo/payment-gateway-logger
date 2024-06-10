@@ -8,7 +8,6 @@
 
 namespace PaymentGatewayLogger\Event;
 
-use Guzzle\Common\Event;
 use Omnipay\Common\Message\ResponseInterface;
 
 class ResponseEvent extends Event

@@ -8,7 +8,7 @@
 
 namespace PaymentGatewayLogger\Event\Subscriber;
 
-use Guzzle\Common\Event;
+use PaymentGatewayLogger\Event\Event;
 use PaymentGatewayLogger\Event\Constants;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

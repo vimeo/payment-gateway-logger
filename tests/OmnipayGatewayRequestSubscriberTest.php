@@ -3,7 +3,7 @@
 namespace PaymentGatewayLogger;
 
 use Exception;
-use Guzzle\Common\Event;
+use PaymentGatewayLogger\Event\Event;
 use InvalidArgumentException;
 use Guzzle\Http\Client;
 use Mockery;

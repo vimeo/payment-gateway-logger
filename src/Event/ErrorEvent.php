@@ -9,7 +9,6 @@
 namespace PaymentGatewayLogger\Event;
 
 use Exception;
-use Guzzle\Common\Event;
 use Omnipay\Common\Message\RequestInterface;
 
 class ErrorEvent extends Event
